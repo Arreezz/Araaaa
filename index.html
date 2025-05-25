@@ -19,52 +19,8 @@
             position: relative;
         }
         
-        /* Entry Page Styles */
-        .entry-page {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            background: #000;
-            z-index: 1000;
-        }
-        
-        .enter-button {
-            color: white;
-            font-size: 3rem;
-            text-decoration: none;
-            padding: 20px 40px;
-            border: 2px solid white;
-            border-radius: 10px;
-            margin-top: 2rem;
-            animation: pulse 2s infinite, moveText 3s infinite;
-            cursor: pointer;
-        }
-        
-        @keyframes pulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.05); }
-            100% { transform: scale(1); }
-        }
-        
-        @keyframes moveText {
-            0% { transform: translateX(-5px); }
-            25% { transform: translateX(5px); }
-            50% { transform: translateX(-5px); }
-            75% { transform: translateX(5px); }
-            100% { transform: translateX(-5px); }
-        }
-        
-        /* Main Content (hidden initially) */
+        /* Main Content */
         .main-content {
-            opacity: 0;
-            visibility: hidden;
-            transition: opacity 1s ease, visibility 0s 1s;
             height: 100vh;
             display: flex;
             justify-content: center;
@@ -193,7 +149,7 @@
             filter: drop-shadow(0 5px 15px rgba(255,255,255,0.3));
         }
         
-        /* Audio controls - UPDATED */
+        /* Audio controls */
         .audio-controls {
             position: fixed;
             top: 20px;
@@ -271,16 +227,11 @@
     </style>
 </head>
 <body>
-    <!-- Entry Page -->
-    <div class="entry-page" id="entryPage">
-        <div class="enter-button" id="enterButton">Click to Enter</div>
-    </div>
-    
     <!-- Main Content -->
-    <div class="main-content" id="mainContent">
+    <div class="main-content">
         <!-- Video Background -->
-        <video autoplay loop class="video-background" id="bgVideo">
-            <source src="Vid/D (1).mp4" type="video/mp4">
+        <video autoplay loop playsinline class="video-background" id="bgVideo">
+            <source src="C:\Users\Arezzzz\Desktop\web\D.mp4" type="video/mp4">
             Your browser does not support HTML5 video.
         </video>
         <div class="video-overlay"></div>
@@ -296,16 +247,15 @@
             </div>
         </div>
         
-        <!-- Audio controls - UPDATED -->
+        <!-- Audio controls -->
         <div class="audio-controls">
             <button class="mute-button" id="muteButton">🔊</button>
-            <input type="range" min="0" max="1" step="0.01" value="0.5" class="volume-slider" id="volumeSlider">
+            <input type="range" min="0" max="1" step="0.01" value="1" class="volume-slider" id="volumeSlider">
         </div>
     </div>
 
     <script>
-        // Initialize everything when page loads
-        window.addEventListener('load', function() {
+        document.addEventListener('DOMContentLoaded', function() {
             const video = document.getElementById('bgVideo');
             const muteButton = document.getElementById('muteButton');
             const volumeSlider = document.getElementById('volumeSlider');
@@ -314,29 +264,39 @@
             const profileImage = document.getElementById('profileImage');
             profileImage.style.backgroundImage = "url('https://i.pinimg.com/1200x/77/ea/3d/77ea3d794148efc7e30fbb8f1fc19d14.jpg')";
             
-            // Set initial video volume
-            video.volume = 0.5;
+            // Set initial video state to full volume (1 = 100%)
+            video.volume = 1;
             video.muted = false;
+            volumeSlider.value = 1; // Set slider to max position
             
-            // Setup enter button
-            document.getElementById('enterButton').addEventListener('click', function() {
-                // Hide entry page
-                document.getElementById('entryPage').style.display = 'none';
-                
-                // Show main content
-                const mainContent = document.getElementById('mainContent');
-                mainContent.style.opacity = '1';
-                mainContent.style.visibility = 'visible';
-                
-                // Start video
-                video.play().catch(e => console.log("Video play error:", e));
-            });
+            // Best-effort autoplay with sound
+            const playVideo = async () => {
+                try {
+                    await video.play();
+                    console.log("Video playing with full volume");
+                } catch (err) {
+                    console.log("Autoplay with sound failed, trying muted:", err);
+                    video.muted = true;
+                    try {
+                        await video.play();
+                        // After playback starts, try unmuting
+                        setTimeout(() => {
+                            video.muted = false;
+                            video.volume = 1;
+                        }, 1000);
+                    } catch (err2) {
+                        console.log("Muted autoplay failed:", err2);
+                    }
+                }
+            };
+            
+            // Start playback
+            playVideo();
             
             // Mute button functionality
             muteButton.addEventListener('click', () => {
                 video.muted = !video.muted;
                 muteButton.textContent = video.muted ? '🔇' : '🔊';
-                // Keep slider in sync
                 if (!video.muted) {
                     video.volume = volumeSlider.value;
                 }
@@ -349,17 +309,12 @@
                 muteButton.textContent = '🔊';
             });
             
-            // Update slider when volume changes programmatically
+            // Update slider when volume changes
             video.addEventListener('volumechange', () => {
                 if (!video.muted) {
                     volumeSlider.value = video.volume;
                 }
             });
-            
-            // Make video full screen by default (as much as possible)
-            video.style.objectFit = 'cover';
-            video.style.width = '100%';
-            video.style.height = '100%';
         });
     </script>
 </body>
