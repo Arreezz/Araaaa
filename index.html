@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Magical Araaaa Experience</title>
+    <title> Araaaa ❤ </title>
     <style>
         * {
             margin: 0;
@@ -341,6 +341,71 @@
             animation: fadeInOut 3s ease-in-out infinite;
         }
         
+        /* Audio controls */
+        .audio-controls {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            z-index: 100;
+        }
+        
+        .mute-button {
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            color: white;
+            font-size: 20px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(5px);
+        }
+        
+        .mute-button:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: scale(1.1);
+        }
+        
+        .volume-slider {
+            -webkit-appearance: none;
+            width: 100px;
+            height: 5px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 5px;
+            outline: none;
+            opacity: 0.7;
+            transition: opacity 0.2s;
+        }
+        
+        .volume-slider:hover {
+            opacity: 1;
+        }
+        
+        .volume-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 15px;
+            height: 15px;
+            border-radius: 50%;
+            background: white;
+            cursor: pointer;
+        }
+        
+        .volume-slider::-moz-range-thumb {
+            width: 15px;
+            height: 15px;
+            border-radius: 50%;
+            background: white;
+            cursor: pointer;
+        }
+        
         /* Main content */
         .main-content {
             opacity: 1;
@@ -364,6 +429,12 @@
                 <a href="http://discordapp.com/users/342035231836209152" target="_blank" class="social-link discord">Discord</a>
                 <a href="https://www.tiktok.com/@a.krd0" target="_blank" class="social-link tiktok">TikTok</a>
             </div>
+        </div>
+        
+        <!-- Audio controls -->
+        <div class="audio-controls">
+            <button class="mute-button" id="muteButton">🔊</button>
+            <input type="range" min="0" max="1" step="0.01" value="0.8" class="volume-slider" id="volumeSlider">
         </div>
         
         <!-- Audio indicator -->
@@ -404,6 +475,41 @@
                 
                 container.appendChild(particle);
             }
+        }
+        
+        // Audio controls functionality
+        function setupAudioControls() {
+            const audio = document.getElementById('music');
+            const muteButton = document.getElementById('muteButton');
+            const volumeSlider = document.getElementById('volumeSlider');
+            
+            // Set initial volume
+            audio.volume = volumeSlider.value;
+            
+            // Mute button functionality
+            muteButton.addEventListener('click', () => {
+                audio.muted = !audio.muted;
+                muteButton.textContent = audio.muted ? '🔇' : '🔊';
+                
+                // If unmuting, restore previous volume
+                if (!audio.muted) {
+                    audio.volume = volumeSlider.value;
+                }
+            });
+            
+            // Volume slider functionality
+            volumeSlider.addEventListener('input', () => {
+                audio.volume = volumeSlider.value;
+                audio.muted = false;
+                muteButton.textContent = '🔊';
+            });
+            
+            // Update slider when volume changes programmatically
+            audio.addEventListener('volumechange', () => {
+                if (!audio.muted) {
+                    volumeSlider.value = audio.volume;
+                }
+            });
         }
         
         // Ultra-aggressive autoplay solution
@@ -458,6 +564,9 @@
         window.addEventListener('load', function() {
             // Create particles
             createParticles();
+            
+            // Setup audio controls
+            setupAudioControls();
             
             // Start audio
             initAudio();
