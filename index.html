@@ -341,126 +341,14 @@
             animation: fadeInOut 3s ease-in-out infinite;
         }
         
-        /* Entry Screen */
-        .entry-screen {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(45deg, #0f0524, #1a0933, #2c0b4a, #4a126b);
-            background-size: 400% 400%;
-            animation: gradientFlow 20s ease infinite;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 9999;
-            transition: opacity 0.8s ease-out, visibility 0.8s ease-out;
-        }
-        
-        .entry-screen.hidden {
-            opacity: 0;
-            visibility: hidden;
-        }
-        
-        .entry-button {
-            padding: 20px 40px;
-            font-size: 2rem;
-            font-family: 'Georgia', serif;
-            font-weight: 400;
-            letter-spacing: 0.1em;
-            background: linear-gradient(45deg, #ff6b9d, #c44b9f, #8e44ad, #3498db);
-            background-size: 300% 300%;
-            border: none;
-            border-radius: 50px;
-            color: white;
-            cursor: pointer;
-            position: relative;
-            overflow: hidden;
-            transition: all 0.3s ease;
-            animation: buttonGlow 3s ease-in-out infinite alternate;
-            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
-            box-shadow: 0 8px 32px rgba(255,107,157,0.3);
-        }
-        
-        .entry-button:hover {
-            transform: scale(1.05);
-            box-shadow: 0 12px 48px rgba(255,107,157,0.5);
-        }
-        
-        .entry-button:active {
-            transform: scale(0.95);
-        }
-        
-        .entry-button::before {
-            content: '';
-            position: absolute;
-            top: -2px;
-            left: -2px;
-            right: -2px;
-            bottom: -2px;
-            background: linear-gradient(45deg, #ff6b9d, #c44b9f, #8e44ad, #3498db, #ff6b9d);
-            background-size: 300% 300%;
-            border-radius: 50px;
-            z-index: -1;
-            animation: borderFlow 4s linear infinite;
-        }
-        
-        .entry-button::after {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 0;
-            height: 0;
-            background: rgba(255,255,255,0.3);
-            border-radius: 50%;
-            transform: translate(-50%, -50%);
-            transition: all 0.5s ease;
-        }
-        
-        .entry-button:hover::after {
-            width: 300px;
-            height: 300px;
-        }
-        
-        @keyframes buttonGlow {
-            0% { 
-                background-position: 0% 50%;
-                box-shadow: 0 8px 32px rgba(255,107,157,0.3);
-            }
-            100% { 
-                background-position: 100% 50%;
-                box-shadow: 0 8px 32px rgba(142,68,173,0.5);
-            }
-        }
-        
-        @keyframes borderFlow {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-        }
-        
-        /* Main content initially hidden */
+        /* Main content */
         .main-content {
-            opacity: 0;
-            visibility: hidden;
-            transition: opacity 1s ease-in, visibility 1s ease-in;
-        }
-        
-        .main-content.visible {
             opacity: 1;
             visibility: visible;
         }
     </style>
 </head>
 <body>
-
-    <!-- Entry Screen -->
-    <div class="entry-screen" id="entryScreen">
-        <button class="entry-button" id="entryButton">Click Here</button>
-    </div>
-    
     <!-- Main Content -->
     <div class="main-content" id="mainContent">
         <!-- Background Elements -->
@@ -485,9 +373,9 @@
     <!-- Audio Element -->
     <audio id="music" loop preload="auto" autoplay style="display: none;">
         <!-- You'll need to replace this with a web-accessible URL -->
-        <source src="song/a.mp3" type="audio/mpeg">
+        <source src="C:\Users\Arezzzz\Desktop\web\a.mp3" type="audio/mpeg">
         <!-- Fallback for local testing - replace with your file -->
-        <source src="song/a.mp3" type="audio/mpeg">
+        <source src="your-audio-file.mp3" type="audio/mpeg">
     </audio>
 
     <script>
@@ -518,29 +406,7 @@
             }
         }
         
-        // Entry screen functionality
-        function initEntryScreen() {
-            const entryScreen = document.getElementById('entryScreen');
-            const entryButton = document.getElementById('entryButton');
-            const mainContent = document.getElementById('mainContent');
-            
-            entryButton.addEventListener('click', function() {
-                // Hide entry screen
-                entryScreen.classList.add('hidden');
-                
-                // Show main content after short delay
-                setTimeout(() => {
-                    mainContent.classList.add('visible');
-                    
-                    // Start audio after showing main content
-                    setTimeout(() => {
-                        initAudio();
-                    }, 500);
-                }, 400);
-            });
-        }
-        
-        // Ultra-aggressive autoplay solution (now triggered by button click)
+        // Ultra-aggressive autoplay solution
         function initAudio() {
             const audio = document.getElementById('music');
             audio.volume = 0.8;
@@ -579,28 +445,22 @@
                 return false;
             }
             
-            // Since this is triggered by user interaction, it should work immediately
             tryAllMethods().then(success => {
                 if (success) {
-                    console.log("Audio started successfully after button click!");
+                    console.log("Audio started successfully!");
                 } else {
-                    console.log("All audio methods failed even after user interaction");
+                    console.log("All audio methods failed");
                 }
             });
         }
         
         // Initialize everything when page loads
         window.addEventListener('load', function() {
-            // Initialize entry screen
-            initEntryScreen();
-            
-            // Create particles (but they won't be visible until main content shows)
+            // Create particles
             createParticles();
-        });
-        
-        // Also initialize on DOM ready
-        document.addEventListener('DOMContentLoaded', function() {
-            initEntryScreen();
+            
+            // Start audio
+            initAudio();
         });
         
         // Backup: ensure audio plays on any user interaction
