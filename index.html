@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title> Araaaa ❤ </title>
+    <title>Magical Araaaa Experience</title>
     <style>
         * {
             margin: 0;
@@ -15,11 +15,60 @@
             overflow: hidden;
             font-family: 'Georgia', serif;
             height: 100vh;
+            background: #000;
+            position: relative;
+        }
+        
+        /* Entry Page Styles */
+        .entry-page {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
             display: flex;
+            flex-direction: column;
             justify-content: center;
             align-items: center;
             background: #000;
-            position: relative;
+            z-index: 1000;
+        }
+        
+        .enter-button {
+            color: white;
+            font-size: 3rem;
+            text-decoration: none;
+            padding: 20px 40px;
+            border: 2px solid white;
+            border-radius: 10px;
+            margin-top: 2rem;
+            animation: pulse 2s infinite, moveText 3s infinite;
+            cursor: pointer;
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+        
+        @keyframes moveText {
+            0% { transform: translateX(-5px); }
+            25% { transform: translateX(5px); }
+            50% { transform: translateX(-5px); }
+            75% { transform: translateX(5px); }
+            100% { transform: translateX(-5px); }
+        }
+        
+        /* Main Content (hidden initially) */
+        .main-content {
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 1s ease, visibility 0s 1s;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
         
         /* Enhanced Cosmic Background */
@@ -134,11 +183,22 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 2rem;
+            gap: 1rem;
+        }
+        
+        .profile-image {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            background-size: cover;
+            background-position: center;
+            margin-bottom: 20px;
+            border: 3px solid white;
+            box-shadow: 0 0 20px rgba(255,255,255,0.5);
         }
         
         .ara {
-            font-size: clamp(4rem, 12vw, 12rem);
+            font-size: clamp(3rem, 8vw, 7rem);
             font-weight: 300;
             font-family: 'Georgia', serif;
             letter-spacing: 0.2em;
@@ -158,6 +218,7 @@
             position: relative;
             display: inline-block;
             text-shadow: none;
+            margin-bottom: 10px;
         }
         
         /* Social Media Links */
@@ -181,6 +242,7 @@
         }
         
         .social-link.instagram {
+            font-size: clamp(2rem, 5vw, 4rem);
             background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888);
             background-size: 200% 200%;
             -webkit-background-clip: text;
@@ -344,7 +406,7 @@
         /* Audio controls */
         .audio-controls {
             position: fixed;
-            bottom: 20px;
+            top: 20px;
             left: 20px;
             display: flex;
             align-items: center;
@@ -405,15 +467,14 @@
             background: white;
             cursor: pointer;
         }
-        
-        /* Main content */
-        .main-content {
-            opacity: 1;
-            visibility: visible;
-        }
     </style>
 </head>
 <body>
+    <!-- Entry Page with only the button -->
+    <div class="entry-page" id="entryPage">
+        <div class="enter-button" id="enterButton">Click to Enter</div>
+    </div>
+    
     <!-- Main Content -->
     <div class="main-content" id="mainContent">
         <!-- Background Elements -->
@@ -423,6 +484,7 @@
         
         <!-- Content -->
         <div class="ara-container">
+            <div class="profile-image" id="profileImage"></div>
             <div class="ara">Araaaa</div>
             <div class="social-links">
                 <a href="https://www.instagram.com/a00.me/" target="_blank" class="social-link instagram">Instagram</a>
@@ -442,11 +504,11 @@
     </div>
     
     <!-- Audio Element -->
-    <audio id="music" loop preload="auto" autoplay style="display: none;">
+    <audio id="music" loop preload="auto" style="display: none;">
         <!-- You'll need to replace this with a web-accessible URL -->
-        <source src="song/a.mp3" type="audio/mpeg">
+        <source src="C:\Users\Arezzzz\Desktop\web\a.mp3" type="audio/mpeg">
         <!-- Fallback for local testing - replace with your file -->
-        <source src="song/a.mp3" type="audio/mpeg">
+        <source src="your-audio-file.mp3" type="audio/mpeg">
     </audio>
 
     <script>
@@ -560,6 +622,17 @@
             });
         }
         
+        // Function to set profile image from URL
+        function setProfileImage(url) {
+            const profileImage = document.getElementById('profileImage');
+            if (url && url.trim() !== '') {
+                profileImage.style.backgroundImage = `url('${url}')`;
+            } else {
+                // Default gradient if no URL is provided
+                profileImage.style.background = 'linear-gradient(45deg, #ff6b9d, #c44b9f, #8e44ad, #3498db, #00bcd4)';
+            }
+        }
+        
         // Initialize everything when page loads
         window.addEventListener('load', function() {
             // Create particles
@@ -568,8 +641,22 @@
             // Setup audio controls
             setupAudioControls();
             
-            // Start audio
-            initAudio();
+            // Set profile image (you can replace this URL with your desired image)
+            setProfileImage('https://i.pinimg.com/1200x/77/ea/3d/77ea3d794148efc7e30fbb8f1fc19d14.jpg');
+            
+            // Setup enter button
+            document.getElementById('enterButton').addEventListener('click', function() {
+                // Hide entry page
+                document.getElementById('entryPage').style.display = 'none';
+                
+                // Show main content
+                const mainContent = document.getElementById('mainContent');
+                mainContent.style.opacity = '1';
+                mainContent.style.visibility = 'visible';
+                
+                // Start audio
+                initAudio();
+            });
         });
         
         // Backup: ensure audio plays on any user interaction
