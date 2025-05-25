@@ -69,110 +69,29 @@
             display: flex;
             justify-content: center;
             align-items: center;
+            position: relative;
         }
         
-        /* Enhanced Cosmic Background */
-        .cosmic-bg {
+        /* Video Background */
+        .video-background {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: radial-gradient(ellipse at center, 
-                        rgba(138, 43, 226, 0.4) 0%,
-                        rgba(75, 0, 130, 0.6) 25%,
-                        rgba(25, 25, 112, 0.8) 50%,
-                        rgba(0, 0, 0, 0.95) 75%,
-                        #000000 100%),
-                       linear-gradient(45deg, 
-                        #0a0015, #1a0033, #2d0a4f, #4a0e6b, #6a1b7a);
-            background-size: 200% 200%, 400% 400%;
-            animation: cosmicFlow 25s ease infinite, pulseGlow 8s ease-in-out infinite;
+            object-fit: cover;
+            z-index: -4;
+        }
+        
+        /* Overlay for better text visibility */
+        .video-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.4);
             z-index: -3;
-        }
-        
-        @keyframes cosmicFlow {
-            0%, 100% { background-position: 0% 50%, 0% 0%; }
-            25% { background-position: 100% 25%, 50% 50%; }
-            50% { background-position: 50% 100%, 100% 100%; }
-            75% { background-position: 25% 75%, 25% 25%; }
-        }
-        
-        @keyframes pulseGlow {
-            0%, 100% { filter: brightness(1) saturate(1); }
-            50% { filter: brightness(1.2) saturate(1.3); }
-        }
-        
-        /* Starfield Effect */
-        .starfield {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-image: 
-                radial-gradient(2px 2px at 20px 30px, #eee, transparent),
-                radial-gradient(2px 2px at 40px 70px, rgba(255,255,255,0.8), transparent),
-                radial-gradient(1px 1px at 90px 40px, #fff, transparent),
-                radial-gradient(1px 1px at 130px 80px, rgba(255,255,255,0.6), transparent),
-                radial-gradient(2px 2px at 160px 30px, #fff, transparent);
-            background-repeat: repeat;
-            background-size: 200px 100px;
-            animation: sparkle 20s linear infinite;
-            z-index: -2;
-        }
-        
-        @keyframes sparkle {
-            0% { transform: translateY(0px); }
-            100% { transform: translateY(-100px); }
-        }
-        
-        /* Enhanced Particle System */
-        #particles {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: -1;
-        }
-        
-        .particle {
-            position: absolute;
-            border-radius: 50%;
-            animation: floatParticle linear infinite;
-            box-shadow: 0 0 6px currentColor;
-        }
-        
-        .particle.type1 {
-            background: radial-gradient(circle, rgba(255,105,180,0.8) 0%, rgba(255,20,147,0.4) 100%);
-        }
-        
-        .particle.type2 {
-            background: radial-gradient(circle, rgba(0,255,255,0.8) 0%, rgba(0,191,255,0.4) 100%);
-        }
-        
-        .particle.type3 {
-            background: radial-gradient(circle, rgba(255,255,0,0.8) 0%, rgba(255,215,0,0.4) 100%);
-        }
-        
-        @keyframes floatParticle {
-            0% { 
-                transform: translateY(100vh) translateX(0) rotate(0deg) scale(0); 
-                opacity: 0; 
-            }
-            10% { 
-                opacity: 1; 
-                transform: translateY(90vh) translateX(0) rotate(45deg) scale(1); 
-            }
-            90% { 
-                opacity: 0.8; 
-                transform: translateY(-10vh) translateX(var(--drift)) rotate(360deg) scale(1.2); 
-            }
-            100% { 
-                transform: translateY(-20vh) translateX(var(--drift)) rotate(405deg) scale(0); 
-                opacity: 0; 
-            }
         }
         
         /* Spectacular Araaaa Text */
@@ -274,91 +193,59 @@
             filter: drop-shadow(0 5px 15px rgba(255,255,255,0.3));
         }
         
-        .social-link::before {
-            content: '';
-            position: absolute;
-            top: -5px;
-            left: -5px;
-            right: -5px;
-            bottom: -5px;
-            background: inherit;
-            border-radius: 10px;
-            filter: blur(10px);
-            opacity: 0;
-            transition: opacity 0.3s ease;
-            z-index: -1;
-        }
-        
-        .social-link:hover::before {
-            opacity: 0.5;
-        }
-        
-        @keyframes instagramGlow {
-            0%, 100% { 
-                background-position: 0% 50%;
-                filter: drop-shadow(0 0 10px rgba(240,148,51,0.5));
-            }
-            50% { 
-                background-position: 100% 50%;
-                filter: drop-shadow(0 0 20px rgba(220,39,67,0.7));
-            }
-        }
-        
-        @keyframes discordGlow {
-            0%, 100% { 
-                background-position: 0% 50%;
-                filter: drop-shadow(0 0 10px rgba(114,137,218,0.5));
-            }
-            50% { 
-                background-position: 100% 50%;
-                filter: drop-shadow(0 0 20px rgba(88,101,242,0.7));
-            }
-        }
-        
-        @keyframes tiktokGlow {
-            0%, 100% { 
-                background-position: 0% 50%;
-                filter: drop-shadow(0 0 10px rgba(255,0,80,0.5));
-            }
-            50% { 
-                background-position: 100% 50%;
-                filter: drop-shadow(0 0 20px rgba(0,242,234,0.7));
-            }
-        }
-        
-        .ara::before {
-            content: 'Araaaa';
-            position: absolute;
-            top: 0;
-            left: 0;
-            background: linear-gradient(45deg, 
-                        rgba(255,107,157,0.3), rgba(196,75,159,0.3), 
-                        rgba(142,68,173,0.3), rgba(52,152,219,0.3));
-            background-size: 400% 400%;
-            -webkit-background-clip: text;
-            background-clip: text;
-            -webkit-text-fill-color: transparent;
-            filter: blur(8px);
-            animation: rainbowFlow 6s ease-in-out infinite reverse;
-            z-index: -1;
-        }
-        
-        .ara::after {
-            content: '';
-            position: absolute;
-            top: -10px;
-            left: -10px;
-            right: -10px;
-            bottom: -10px;
-            background: radial-gradient(ellipse, 
-                        rgba(255,20,147,0.2) 0%, 
-                        rgba(0,255,255,0.1) 50%, 
-                        transparent 70%);
+        /* Audio controls - UPDATED */
+        .audio-controls {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            z-index: 100;
+            background: rgba(0, 0, 0, 0.5);
+            padding: 5px 10px;
             border-radius: 20px;
-            animation: auraGlow 4s ease-in-out infinite;
-            z-index: -2;
         }
         
+        .mute-button {
+            background: transparent;
+            border: none;
+            color: white;
+            font-size: 20px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            padding: 5px;
+        }
+        
+        .volume-slider {
+            width: 80px;
+            -webkit-appearance: none;
+            height: 4px;
+            background: rgba(255, 255, 255, 0.5);
+            border-radius: 2px;
+            outline: none;
+            transition: width 0.3s ease;
+        }
+        
+        .volume-slider:hover {
+            width: 100px;
+            height: 5px;
+        }
+        
+        .volume-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: white;
+            cursor: pointer;
+        }
+        
+        /* Animations */
         @keyframes rainbowFlow {
             0%, 100% { background-position: 0% 50%; }
             50% { background-position: 100% 50%; }
@@ -381,106 +268,22 @@
             0%, 100% { transform: translateY(0px) scale(1); }
             50% { transform: translateY(-10px) scale(1.02); }
         }
-        
-        @keyframes auraGlow {
-            0%, 100% { 
-                opacity: 0.3; 
-                transform: scale(1); 
-            }
-            50% { 
-                opacity: 0.7; 
-                transform: scale(1.1); 
-            }
-        }
-        
-        /* Audio visualization hint */
-        .audio-indicator {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            color: rgba(255,255,255,0.6);
-            font-size: 0.8rem;
-            animation: fadeInOut 3s ease-in-out infinite;
-        }
-        
-        /* Audio controls */
-        .audio-controls {
-            position: fixed;
-            top: 20px;
-            left: 20px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            z-index: 100;
-        }
-        
-        .mute-button {
-            background: rgba(255, 255, 255, 0.2);
-            border: none;
-            border-radius: 50%;
-            width: 40px;
-            height: 40px;
-            color: white;
-            font-size: 20px;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.3s ease;
-            backdrop-filter: blur(5px);
-        }
-        
-        .mute-button:hover {
-            background: rgba(255, 255, 255, 0.3);
-            transform: scale(1.1);
-        }
-        
-        .volume-slider {
-            -webkit-appearance: none;
-            width: 100px;
-            height: 5px;
-            background: rgba(255, 255, 255, 0.2);
-            border-radius: 5px;
-            outline: none;
-            opacity: 0.7;
-            transition: opacity 0.2s;
-        }
-        
-        .volume-slider:hover {
-            opacity: 1;
-        }
-        
-        .volume-slider::-webkit-slider-thumb {
-            -webkit-appearance: none;
-            appearance: none;
-            width: 15px;
-            height: 15px;
-            border-radius: 50%;
-            background: white;
-            cursor: pointer;
-        }
-        
-        .volume-slider::-moz-range-thumb {
-            width: 15px;
-            height: 15px;
-            border-radius: 50%;
-            background: white;
-            cursor: pointer;
-        }
     </style>
 </head>
 <body>
-    <!-- Entry Page with only the button -->
+    <!-- Entry Page -->
     <div class="entry-page" id="entryPage">
         <div class="enter-button" id="enterButton">Click to Enter</div>
     </div>
     
     <!-- Main Content -->
     <div class="main-content" id="mainContent">
-        <!-- Background Elements -->
-        <div class="cosmic-bg"></div>
-        <div class="starfield"></div>
-        <div id="particles"></div>
+        <!-- Video Background -->
+        <video autoplay loop class="video-background" id="bgVideo">
+            <source src="C:\Users\Arezzzz\Desktop\web\e.mp4" type="video/mp4">
+            Your browser does not support HTML5 video.
+        </video>
+        <div class="video-overlay"></div>
         
         <!-- Content -->
         <div class="ara-container">
@@ -493,156 +296,27 @@
             </div>
         </div>
         
-        <!-- Audio controls -->
+        <!-- Audio controls - UPDATED -->
         <div class="audio-controls">
             <button class="mute-button" id="muteButton">🔊</button>
-            <input type="range" min="0" max="1" step="0.01" value="0.8" class="volume-slider" id="volumeSlider">
+            <input type="range" min="0" max="1" step="0.01" value="0.5" class="volume-slider" id="volumeSlider">
         </div>
-        
-        <!-- Audio indicator -->
-        <div class="audio-indicator">♪ Audio Experience</div>
     </div>
-    
-    <!-- Audio Element -->
-    <audio id="music" loop preload="auto" style="display: none;">
-        <!-- You'll need to replace this with a web-accessible URL -->
-        <source src="song/a.mp3" type="audio/mpeg">
-        <!-- Fallback for local testing - replace with your file -->
-        <source src="song/a.mp3" type="audio/mpeg">
-    </audio>
 
     <script>
-        // Enhanced particle system
-        function createParticles() {
-            const container = document.getElementById('particles');
-            const particleCount = 60;
-            
-            for (let i = 0; i < particleCount; i++) {
-                const particle = document.createElement('div');
-                const type = Math.floor(Math.random() * 3) + 1;
-                particle.className = `particle type${type}`;
-                
-                const size = 2 + Math.random() * 4;
-                const x = Math.random() * 100;
-                const drift = (Math.random() - 0.5) * 100;
-                const duration = 15 + Math.random() * 20;
-                const delay = Math.random() * 10;
-                
-                particle.style.width = `${size}px`;
-                particle.style.height = `${size}px`;
-                particle.style.left = `${x}%`;
-                particle.style.setProperty('--drift', `${drift}px`);
-                particle.style.animationDuration = `${duration}s`;
-                particle.style.animationDelay = `${delay}s`;
-                
-                container.appendChild(particle);
-            }
-        }
-        
-        // Audio controls functionality
-        function setupAudioControls() {
-            const audio = document.getElementById('music');
+        // Initialize everything when page loads
+        window.addEventListener('load', function() {
+            const video = document.getElementById('bgVideo');
             const muteButton = document.getElementById('muteButton');
             const volumeSlider = document.getElementById('volumeSlider');
             
-            // Set initial volume
-            audio.volume = volumeSlider.value;
-            
-            // Mute button functionality
-            muteButton.addEventListener('click', () => {
-                audio.muted = !audio.muted;
-                muteButton.textContent = audio.muted ? '🔇' : '🔊';
-                
-                // If unmuting, restore previous volume
-                if (!audio.muted) {
-                    audio.volume = volumeSlider.value;
-                }
-            });
-            
-            // Volume slider functionality
-            volumeSlider.addEventListener('input', () => {
-                audio.volume = volumeSlider.value;
-                audio.muted = false;
-                muteButton.textContent = '🔊';
-            });
-            
-            // Update slider when volume changes programmatically
-            audio.addEventListener('volumechange', () => {
-                if (!audio.muted) {
-                    volumeSlider.value = audio.volume;
-                }
-            });
-        }
-        
-        // Ultra-aggressive autoplay solution
-        function initAudio() {
-            const audio = document.getElementById('music');
-            audio.volume = 0.8;
-            
-            // Method 1: Direct autoplay attempts
-            const playAttempts = [
-                () => audio.play(),
-                () => {
-                    audio.muted = true;
-                    return audio.play().then(() => {
-                        setTimeout(() => {
-                            audio.muted = false;
-                            audio.volume = 0.8;
-                        }, 10);
-                    });
-                },
-                () => {
-                    audio.currentTime = 0;
-                    audio.muted = false;
-                    audio.volume = 0.8;
-                    return audio.play();
-                }
-            ];
-            
-            // Try all methods sequentially
-            async function tryAllMethods() {
-                for (let i = 0; i < playAttempts.length; i++) {
-                    try {
-                        await playAttempts[i]();
-                        console.log(`Audio started with method ${i + 1}`);
-                        return true;
-                    } catch (e) {
-                        console.log(`Method ${i + 1} failed:`, e);
-                    }
-                }
-                return false;
-            }
-            
-            tryAllMethods().then(success => {
-                if (success) {
-                    console.log("Audio started successfully!");
-                } else {
-                    console.log("All audio methods failed");
-                }
-            });
-        }
-        
-        // Function to set profile image from URL
-        function setProfileImage(url) {
+            // Set profile image
             const profileImage = document.getElementById('profileImage');
-            if (url && url.trim() !== '') {
-                profileImage.style.backgroundImage = `url('${url}')`;
-            } else {
-                // Default gradient if no URL is provided
-                profileImage.style.background = 'linear-gradient(45deg, #ff6b9d, #c44b9f, #8e44ad, #3498db, #00bcd4)';
-            }
-        }
-        
-        // Initialize everything when page loads
-        window.addEventListener('load', function() {
-            // Create particles
-            createParticles();
+            profileImage.style.backgroundImage = "url('https://i.pinimg.com/1200x/77/ea/3d/77ea3d794148efc7e30fbb8f1fc19d14.jpg')";
             
-            // Setup audio controls
-            setupAudioControls();
-            
-            // Set profile image (you can replace this URL with your desired image)
-            setProfileImage('https://i.pinimg.com/1200x/77/ea/3d/77ea3d794148efc7e30fbb8f1fc19d14.jpg');
+            // Set initial video volume
+            video.volume = 0.5;
+            video.muted = false;
             
             // Setup enter button
             document.getElementById('enterButton').addEventListener('click', function() {
@@ -654,24 +328,38 @@
                 mainContent.style.opacity = '1';
                 mainContent.style.visibility = 'visible';
                 
-                // Start audio
-                initAudio();
+                // Start video
+                video.play().catch(e => console.log("Video play error:", e));
             });
-        });
-        
-        // Backup: ensure audio plays on any user interaction
-        document.addEventListener('DOMContentLoaded', function() {
-            const audio = document.getElementById('music');
             
-            const startAudio = () => {
-                if (audio.paused) {
-                    audio.play().catch(e => console.log("Backup audio play failed:", e));
+            // Mute button functionality
+            muteButton.addEventListener('click', () => {
+                video.muted = !video.muted;
+                muteButton.textContent = video.muted ? '🔇' : '🔊';
+                // Keep slider in sync
+                if (!video.muted) {
+                    video.volume = volumeSlider.value;
                 }
-            };
-            
-            ['click', 'touchstart', 'keydown'].forEach(event => {
-                document.addEventListener(event, startAudio, { once: true });
             });
+            
+            // Volume slider functionality
+            volumeSlider.addEventListener('input', () => {
+                video.volume = volumeSlider.value;
+                video.muted = false;
+                muteButton.textContent = '🔊';
+            });
+            
+            // Update slider when volume changes programmatically
+            video.addEventListener('volumechange', () => {
+                if (!video.muted) {
+                    volumeSlider.value = video.volume;
+                }
+            });
+            
+            // Make video full screen by default (as much as possible)
+            video.style.objectFit = 'cover';
+            video.style.width = '100%';
+            video.style.height = '100%';
         });
     </script>
 </body>
