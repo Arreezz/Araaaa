@@ -387,8 +387,9 @@
     <div class="main-content">
         <!-- Adaptive Background System -->
         <div class="fallback-background"></div>
-        <video autoplay loop muted playsinline class="video-background" id="bgVideo">
+        <video autoplay loop muted playsinline webkit-playsinline class="video-background" id="bgVideo" preload="auto">
             <source src="Vid/D (1).mp4" type="video/mp4">
+            <source src="Vid/D (1).webm" type="video/webm">
         </video>
         <div class="video-overlay"></div>
         
@@ -479,44 +480,98 @@
             }
             
             setupVideoPlayer() {
-                if (!this.hasVideoSupport || this.performanceLevel === 'low') {
+                if (!this.hasVideoSupport) {
                     this.video.style.display = 'none';
                     return;
                 }
                 
+                // Mobile-specific video setup
+                if (this.isMobile) {
+                    this.video.setAttribute('webkit-playsinline', '');
+                    this.video.setAttribute('playsinline', '');
+                    this.video.muted = true; // Start muted for mobile autoplay
+                    this.video.volume = 1.0;
+                    this.video.load(); // Force reload on mobile
+                }
+                
                 // Set full volume immediately
                 this.video.volume = 1.0;
-                this.video.muted = false;
                 this.volumeSlider.value = 1.0;
-                this.muteButton.textContent = '🔊';
+                
+                // Start muted for autoplay compatibility, will unmute after
+                this.video.muted = true;
+                this.muteButton.textContent = '🔇';
                 
                 this.playVideo();
             }
             
             async playVideo() {
                 try {
-                    // Try to play with sound first
-                    this.video.muted = false;
-                    await this.video.play();
-                    
-                } catch (error) {
-                    console.log('Video autoplay with sound failed, trying muted:', error);
-                    try {
-                        // If that fails, start muted and immediately unmute
+                    // For mobile, always start muted for autoplay compliance
+                    if (this.isMobile) {
                         this.video.muted = true;
                         await this.video.play();
                         
-                        // Immediately unmute and set full volume
+                        // Unmute after successful autoplay on mobile
                         setTimeout(() => {
                             this.video.muted = false;
                             this.video.volume = 1.0;
                             this.muteButton.textContent = '🔊';
-                        }, 100);
-                        
-                    } catch (secondError) {
-                        console.log('Video autoplay completely failed:', secondError);
-                        this.video.style.opacity = '0';
+                        }, 500);
+                    } else {
+                        // Desktop: try unmuted first
+                        try {
+                            this.video.muted = false;
+                            await this.video.play();
+                            this.muteButton.textContent = '🔊';
+                        } catch (error) {
+                            // Fallback to muted autoplay
+                            console.log('Desktop autoplay with sound failed, trying muted:', error);
+                            this.video.muted = true;
+                            await this.video.play();
+                            
+                            // Auto-unmute after successful muted play
+                            setTimeout(() => {
+                                this.video.muted = false;
+                                this.video.volume = 1.0;
+                                this.muteButton.textContent = '🔊';
+                            }, 200);
+                        }
                     }
+                    
+                } catch (error) {
+                    console.log('Video autoplay failed completely:', error);
+                    
+                    // Aggressive retry for mobile
+                    if (this.isMobile) {
+                        console.log('Retrying mobile video play...');
+                        setTimeout(() => {
+                            this.retryMobileVideo();
+                        }, 1000);
+                    } else {
+                        this.video.style.opacity = '0.3';
+                    }
+                }
+            }
+            
+            async retryMobileVideo() {
+                try {
+                    this.video.muted = true;
+                    this.video.currentTime = 0;
+                    await this.video.play();
+                    console.log('Mobile video retry successful');
+                    
+                    // Try to unmute after successful retry
+                    setTimeout(() => {
+                        this.video.muted = false;
+                        this.video.volume = 1.0;
+                        this.muteButton.textContent = '🔊';
+                    }, 800);
+                    
+                } catch (retryError) {
+                    console.log('Mobile video retry failed:', retryError);
+                    // Show fallback background more prominently
+                    this.video.style.display = 'none';
                 }
             }
             
@@ -550,14 +605,40 @@
                 // Add click-to-unmute functionality for better browser compatibility
                 document.addEventListener('click', this.handleFirstInteraction.bind(this), { once: true });
                 document.addEventListener('touchstart', this.handleFirstInteraction.bind(this), { once: true });
+                document.addEventListener('touchend', this.handleFirstInteraction.bind(this), { once: true });
+                
+                // Additional mobile video event listeners
+                this.video.addEventListener('canplay', () => {
+                    console.log('Video can play');
+                    if (this.video.paused) {
+                        this.video.play().catch(e => console.log('Canplay auto-play failed:', e));
+                    }
+                });
+                
+                this.video.addEventListener('loadeddata', () => {
+                    console.log('Video data loaded');
+                });
+                
+                this.video.addEventListener('error', (e) => {
+                    console.log('Video error:', e);
+                    // Try to reload video on error
+                    setTimeout(() => {
+                        this.video.load();
+                    }, 2000);
+                });
             }
             
             handleFirstInteraction() {
-                if (this.video.muted) {
+                if (this.video.muted || this.video.paused) {
                     this.video.muted = false;
                     this.video.volume = 1.0;
                     this.volumeSlider.value = 1.0;
                     this.muteButton.textContent = '🔊';
+                    
+                    // Ensure video is playing on interaction
+                    if (this.video.paused) {
+                        this.video.play().catch(e => console.log('Play on interaction failed:', e));
+                    }
                 }
             }
             
