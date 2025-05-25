@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Araaaa ❤</title>
     <style>
         * {
@@ -17,6 +17,10 @@
             height: 100vh;
             background: #000;
             position: relative;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
         }
         
         /* Main Content */
@@ -26,9 +30,10 @@
             justify-content: center;
             align-items: center;
             position: relative;
+            padding: 20px;
         }
         
-        /* Video Background */
+        /* Adaptive Background System */
         .video-background {
             position: fixed;
             top: 0;
@@ -37,6 +42,25 @@
             height: 100%;
             object-fit: cover;
             z-index: -4;
+            opacity: 1;
+            transition: opacity 0.5s ease;
+        }
+        
+        .fallback-background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, 
+                        #ff6b9d 0%, 
+                        #c44b9f 25%, 
+                        #8e44ad 50%, 
+                        #3498db 75%, 
+                        #00bcd4 100%);
+            background-size: 400% 400%;
+            animation: gradientShift 8s ease-in-out infinite;
+            z-index: -5;
         }
         
         /* Overlay for better text visibility */
@@ -50,7 +74,7 @@
             z-index: -3;
         }
         
-        /* Spectacular Araaaa Text */
+        /* Responsive Container */
         .ara-container {
             text-align: center;
             position: relative;
@@ -58,22 +82,28 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 1rem;
+            gap: clamp(0.8rem, 3vw, 1.5rem);
+            width: 100%;
+            max-width: 500px;
+            margin: 0 auto;
         }
         
+        /* Profile Image - Responsive */
         .profile-image {
-            width: 150px;
-            height: 150px;
+            width: clamp(80px, 20vw, 150px);
+            height: clamp(80px, 20vw, 150px);
             border-radius: 50%;
             background-size: cover;
             background-position: center;
-            margin-bottom: 20px;
+            margin-bottom: clamp(10px, 3vw, 20px);
             border: 3px solid white;
             box-shadow: 0 0 20px rgba(255,255,255,0.5);
+            transition: all 0.3s ease;
         }
         
+        /* Adaptive Text Sizing */
         .ara {
-            font-size: clamp(3rem, 8vw, 7rem);
+            font-size: clamp(2rem, 8vw, 7rem);
             font-weight: 300;
             font-family: 'Georgia', serif;
             letter-spacing: 0.2em;
@@ -86,26 +116,24 @@
             -webkit-background-clip: text;
             background-clip: text;
             -webkit-text-fill-color: transparent;
-            animation: 
-                rainbowFlow 6s ease-in-out infinite,
-                textGlow 3s ease-in-out infinite alternate,
-                textFloat 4s ease-in-out infinite;
             position: relative;
             display: inline-block;
             text-shadow: none;
-            margin-bottom: 10px;
+            margin-bottom: clamp(5px, 2vw, 15px);
+            line-height: 1.1;
         }
         
-        /* Social Media Links */
+        /* Social Media Links - Platform Adaptive */
         .social-links {
             display: flex;
             flex-direction: column;
-            gap: 1.5rem;
+            gap: clamp(0.8rem, 3vw, 1.5rem);
             align-items: center;
+            width: 100%;
         }
         
         .social-link {
-            font-size: clamp(1.5rem, 4vw, 3rem);
+            font-size: clamp(1.2rem, 4vw, 2.5rem);
             font-weight: 400;
             font-family: 'Georgia', serif;
             letter-spacing: 0.1em;
@@ -114,16 +142,25 @@
             display: inline-block;
             transition: all 0.3s ease;
             cursor: pointer;
+            padding: clamp(8px, 2vw, 15px) clamp(20px, 5vw, 40px);
+            border-radius: 25px;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            width: clamp(180px, 50vw, 280px);
+            text-align: center;
+            min-height: clamp(40px, 8vw, 60px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
         
         .social-link.instagram {
-            font-size: clamp(2rem, 5vw, 4rem);
             background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888);
             background-size: 200% 200%;
             -webkit-background-clip: text;
             background-clip: text;
             -webkit-text-fill-color: transparent;
-            animation: instagramGlow 4s ease-in-out infinite;
         }
         
         .social-link.discord {
@@ -132,7 +169,6 @@
             -webkit-background-clip: text;
             background-clip: text;
             -webkit-text-fill-color: transparent;
-            animation: discordGlow 4s ease-in-out infinite;
         }
         
         .social-link.tiktok {
@@ -141,68 +177,122 @@
             -webkit-background-clip: text;
             background-clip: text;
             -webkit-text-fill-color: transparent;
-            animation: tiktokGlow 4s ease-in-out infinite;
         }
         
-        .social-link:hover {
-            transform: scale(1.1) translateY(-5px);
-            filter: drop-shadow(0 5px 15px rgba(255,255,255,0.3));
-        }
-        
-        /* Audio controls */
+        /* Audio Controls - Adaptive */
         .audio-controls {
             position: fixed;
-            top: 20px;
-            left: 20px;
+            top: clamp(10px, 3vw, 20px);
+            left: clamp(10px, 3vw, 20px);
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: clamp(5px, 2vw, 10px);
             z-index: 100;
             background: rgba(0, 0, 0, 0.5);
-            padding: 5px 10px;
+            padding: clamp(3px, 1vw, 8px) clamp(8px, 2vw, 12px);
             border-radius: 20px;
+            backdrop-filter: blur(10px);
         }
         
         .mute-button {
             background: transparent;
             border: none;
             color: white;
-            font-size: 20px;
+            font-size: clamp(16px, 4vw, 20px);
             cursor: pointer;
             display: flex;
             align-items: center;
             justify-content: center;
             transition: all 0.3s ease;
-            padding: 5px;
+            padding: clamp(3px, 1vw, 5px);
+            min-width: clamp(24px, 6vw, 30px);
+            min-height: clamp(24px, 6vw, 30px);
         }
         
         .volume-slider {
-            width: 80px;
+            width: clamp(50px, 15vw, 80px);
             -webkit-appearance: none;
-            height: 4px;
+            height: clamp(3px, 1vw, 4px);
             background: rgba(255, 255, 255, 0.5);
             border-radius: 2px;
             outline: none;
-            transition: width 0.3s ease;
-        }
-        
-        .volume-slider:hover {
-            width: 100px;
-            height: 5px;
+            transition: all 0.3s ease;
         }
         
         .volume-slider::-webkit-slider-thumb {
             -webkit-appearance: none;
             appearance: none;
-            width: 12px;
-            height: 12px;
+            width: clamp(8px, 3vw, 12px);
+            height: clamp(8px, 3vw, 12px);
             border-radius: 50%;
             background: white;
             cursor: pointer;
         }
         
+        .volume-slider::-moz-range-thumb {
+            width: clamp(8px, 3vw, 12px);
+            height: clamp(8px, 3vw, 12px);
+            border-radius: 50%;
+            background: white;
+            cursor: pointer;
+            border: none;
+        }
+        
+        /* Performance Level Detection */
+        .performance-high .ara {
+            animation: 
+                rainbowFlow 6s ease-in-out infinite,
+                textGlow 3s ease-in-out infinite alternate,
+                textFloat 4s ease-in-out infinite;
+        }
+        
+        .performance-medium .ara {
+            animation: 
+                rainbowFlow 8s ease-in-out infinite,
+                textFloat 6s ease-in-out infinite;
+        }
+        
+        .performance-low .ara {
+            animation: rainbowFlow 10s linear infinite;
+        }
+        
+        /* Interactive States - Platform Adaptive */
+        @media (hover: hover) and (pointer: fine) {
+            .social-link:hover {
+                transform: scale(1.05) translateY(-3px);
+                filter: drop-shadow(0 5px 15px rgba(255,255,255,0.3));
+                background-color: rgba(255, 255, 255, 0.15);
+            }
+            
+            .mute-button:hover {
+                transform: scale(1.1);
+                color: #fff;
+            }
+            
+            .volume-slider:hover {
+                width: clamp(60px, 18vw, 100px);
+                height: clamp(4px, 1.2vw, 5px);
+            }
+        }
+        
+        @media (hover: none) and (pointer: coarse) {
+            .social-link:active {
+                transform: scale(0.95);
+                background-color: rgba(255, 255, 255, 0.2);
+            }
+            
+            .mute-button:active {
+                transform: scale(0.9);
+            }
+        }
+        
         /* Animations */
         @keyframes rainbowFlow {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+        
+        @keyframes gradientShift {
             0%, 100% { background-position: 0% 50%; }
             50% { background-position: 100% 50%; }
         }
@@ -222,17 +312,83 @@
         
         @keyframes textFloat {
             0%, 100% { transform: translateY(0px) scale(1); }
-            50% { transform: translateY(-10px) scale(1.02); }
+            50% { transform: translateY(-5px) scale(1.01); }
+        }
+        
+        /* Device-Specific Optimizations */
+        
+        /* Mobile Portrait */
+        @media screen and (max-width: 480px) and (orientation: portrait) {
+            .ara-container {
+                gap: 1rem;
+            }
+            
+            .profile-image {
+                margin-bottom: 15px;
+            }
+        }
+        
+        /* Mobile Landscape */
+        @media screen and (max-height: 500px) and (orientation: landscape) {
+            .ara-container {
+                gap: 0.5rem;
+            }
+            
+            .profile-image {
+                width: clamp(60px, 15vw, 100px);
+                height: clamp(60px, 15vw, 100px);
+                margin-bottom: 5px;
+            }
+            
+            .ara {
+                font-size: clamp(1.5rem, 6vw, 4rem);
+            }
+        }
+        
+        /* Tablet */
+        @media screen and (min-width: 768px) and (max-width: 1024px) {
+            .ara-container {
+                max-width: 600px;
+            }
+        }
+        
+        /* Large Screens */
+        @media screen and (min-width: 1200px) {
+            .ara-container {
+                max-width: 700px;
+            }
+        }
+        
+        /* High DPI Displays */
+        @media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+            .profile-image {
+                border-width: 2px;
+            }
+        }
+        
+        /* Reduced Motion Accessibility */
+        @media (prefers-reduced-motion: reduce) {
+            * {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
+        }
+        
+        /* Dark Mode Support */
+        @media (prefers-color-scheme: light) {
+            .video-overlay {
+                background: rgba(0, 0, 0, 0.3);
+            }
         }
     </style>
 </head>
 <body>
-    <!-- Main Content -->
     <div class="main-content">
-        <!-- Video Background -->
-        <video autoplay loop playsinline class="video-background" id="bgVideo">
+        <!-- Adaptive Background System -->
+        <div class="fallback-background"></div>
+        <video autoplay loop muted playsinline class="video-background" id="bgVideo">
             <source src="Vid/D (1).mp4" type="video/mp4">
-            Your browser does not support HTML5 video.
         </video>
         <div class="video-overlay"></div>
         
@@ -248,74 +404,251 @@
         </div>
         
         <!-- Audio controls -->
-        <div class="audio-controls">
+        <div class="audio-controls" id="audioControls">
             <button class="mute-button" id="muteButton">🔊</button>
             <input type="range" min="0" max="1" step="0.01" value="1" class="volume-slider" id="volumeSlider">
         </div>
     </div>
 
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const video = document.getElementById('bgVideo');
-            const muteButton = document.getElementById('muteButton');
-            const volumeSlider = document.getElementById('volumeSlider');
+        class PlatformAdaptivePlayer {
+            constructor() {
+                this.video = document.getElementById('bgVideo');
+                this.muteButton = document.getElementById('muteButton');
+                this.volumeSlider = document.getElementById('volumeSlider');
+                this.audioControls = document.getElementById('audioControls');
+                this.profileImage = document.getElementById('profileImage');
+                
+                this.isMobile = this.detectMobile();
+                this.performanceLevel = this.detectPerformance();
+                this.hasVideoSupport = this.checkVideoSupport();
+                
+                this.init();
+            }
             
-            // Set profile image
-            const profileImage = document.getElementById('profileImage');
-            profileImage.style.backgroundImage = "url('https://i.pinimg.com/1200x/77/ea/3d/77ea3d794148efc7e30fbb8f1fc19d14.jpg')";
+            detectMobile() {
+                return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || 
+                       window.innerWidth <= 768 || 
+                       ('ontouchstart' in window);
+            }
             
-            // Set initial video state to full volume (1 = 100%)
-            video.volume = 1;
-            video.muted = false;
-            volumeSlider.value = 1; // Set slider to max position
+            detectPerformance() {
+                const memory = navigator.deviceMemory || 4;
+                const cores = navigator.hardwareConcurrency || 4;
+                const connection = navigator.connection?.effectiveType || '4g';
+                
+                if (memory >= 8 && cores >= 8 && (connection === '4g' || !connection)) {
+                    return 'high';
+                } else if (memory >= 4 && cores >= 4) {
+                    return 'medium';
+                } else {
+                    return 'low';
+                }
+            }
             
-            // Best-effort autoplay with sound
-            const playVideo = async () => {
+            checkVideoSupport() {
+                const video = document.createElement('video');
+                return video.canPlayType && video.canPlayType('video/mp4').replace(/no/, '');
+            }
+            
+            init() {
+                this.setupPerformanceLevel();
+                this.setupProfileImage();
+                this.setupVideoPlayer();
+                this.setupAudioControls();
+                this.setupTouchOptimizations();
+                this.setupAccessibility();
+            }
+            
+            setupPerformanceLevel() {
+                document.body.classList.add(`performance-${this.performanceLevel}`);
+                
+                if (this.performanceLevel === 'low' || this.isMobile) {
+                    // Reduce animations for low-performance devices
+                    const style = document.createElement('style');
+                    style.textContent = `
+                        .ara { animation-duration: 12s !important; }
+                        .fallback-background { animation-duration: 12s !important; }
+                    `;
+                    document.head.appendChild(style);
+                }
+            }
+            
+            setupProfileImage() {
+                this.profileImage.style.backgroundImage = "url('https://i.pinimg.com/1200x/77/ea/3d/77ea3d794148efc7e30fbb8f1fc19d14.jpg')";
+            }
+            
+            setupVideoPlayer() {
+                if (!this.hasVideoSupport || this.performanceLevel === 'low') {
+                    this.video.style.display = 'none';
+                    return;
+                }
+                
+                // Set full volume immediately
+                this.video.volume = 1.0;
+                this.video.muted = false;
+                this.volumeSlider.value = 1.0;
+                this.muteButton.textContent = '🔊';
+                
+                this.playVideo();
+            }
+            
+            async playVideo() {
                 try {
-                    await video.play();
-                    console.log("Video playing with full volume");
-                } catch (err) {
-                    console.log("Autoplay with sound failed, trying muted:", err);
-                    video.muted = true;
+                    // Try to play with sound first
+                    this.video.muted = false;
+                    await this.video.play();
+                    
+                } catch (error) {
+                    console.log('Video autoplay with sound failed, trying muted:', error);
                     try {
-                        await video.play();
-                        // After playback starts, try unmuting
+                        // If that fails, start muted and immediately unmute
+                        this.video.muted = true;
+                        await this.video.play();
+                        
+                        // Immediately unmute and set full volume
                         setTimeout(() => {
-                            video.muted = false;
-                            video.volume = 1;
-                        }, 1000);
-                    } catch (err2) {
-                        console.log("Muted autoplay failed:", err2);
+                            this.video.muted = false;
+                            this.video.volume = 1.0;
+                            this.muteButton.textContent = '🔊';
+                        }, 100);
+                        
+                    } catch (secondError) {
+                        console.log('Video autoplay completely failed:', secondError);
+                        this.video.style.opacity = '0';
                     }
                 }
-            };
+            }
             
-            // Start playback
-            playVideo();
-            
-            // Mute button functionality
-            muteButton.addEventListener('click', () => {
-                video.muted = !video.muted;
-                muteButton.textContent = video.muted ? '🔇' : '🔊';
-                if (!video.muted) {
-                    video.volume = volumeSlider.value;
+            setupAudioControls() {
+                if (!this.hasVideoSupport || this.performanceLevel === 'low') {
+                    this.audioControls.style.display = 'none';
+                    return;
                 }
-            });
+                
+                this.muteButton.addEventListener('click', () => {
+                    this.video.muted = !this.video.muted;
+                    this.muteButton.textContent = this.video.muted ? '🔇' : '🔊';
+                    
+                    if (!this.video.muted) {
+                        this.video.volume = this.volumeSlider.value;
+                    }
+                });
+                
+                this.volumeSlider.addEventListener('input', () => {
+                    this.video.volume = this.volumeSlider.value;
+                    this.video.muted = false;
+                    this.muteButton.textContent = '🔊';
+                });
+                
+                this.video.addEventListener('volumechange', () => {
+                    if (!this.video.muted) {
+                        this.volumeSlider.value = this.video.volume;
+                    }
+                });
+                
+                // Add click-to-unmute functionality for better browser compatibility
+                document.addEventListener('click', this.handleFirstInteraction.bind(this), { once: true });
+                document.addEventListener('touchstart', this.handleFirstInteraction.bind(this), { once: true });
+            }
             
-            // Volume slider functionality
-            volumeSlider.addEventListener('input', () => {
-                video.volume = volumeSlider.value;
-                video.muted = false;
-                muteButton.textContent = '🔊';
-            });
-            
-            // Update slider when volume changes
-            video.addEventListener('volumechange', () => {
-                if (!video.muted) {
-                    volumeSlider.value = video.volume;
+            handleFirstInteraction() {
+                if (this.video.muted) {
+                    this.video.muted = false;
+                    this.video.volume = 1.0;
+                    this.volumeSlider.value = 1.0;
+                    this.muteButton.textContent = '🔊';
                 }
-            });
+            }
+            
+            setupTouchOptimizations() {
+                if (!this.isMobile) return;
+                
+                // Prevent zoom on double tap
+                let lastTouchEnd = 0;
+                document.addEventListener('touchend', (event) => {
+                    const now = new Date().getTime();
+                    if (now - lastTouchEnd <= 300) {
+                        event.preventDefault();
+                    }
+                    lastTouchEnd = now;
+                }, false);
+                
+                // Add touch feedback to social links
+                const socialLinks = document.querySelectorAll('.social-link');
+                socialLinks.forEach(link => {
+                    link.addEventListener('touchstart', function() {
+                        this.style.transform = 'scale(0.95)';
+                        this.style.opacity = '0.8';
+                    });
+                    
+                    link.addEventListener('touchend', function() {
+                        setTimeout(() => {
+                            this.style.transform = '';
+                            this.style.opacity = '';
+                        }, 150);
+                    });
+                });
+                
+                // Handle orientation changes
+                window.addEventListener('orientationchange', () => {
+                    setTimeout(() => {
+                        window.scrollTo(0, 0);
+                        // Recalculate sizes if needed
+                        this.handleResize();
+                    }, 100);
+                });
+            }
+            
+            setupAccessibility() {
+                // Add ARIA labels
+                this.muteButton.setAttribute('aria-label', 'Toggle video sound');
+                this.volumeSlider.setAttribute('aria-label', 'Adjust volume');
+                
+                // Keyboard navigation
+                document.addEventListener('keydown', (e) => {
+                    if (e.key === ' ' || e.key === 'Enter') {
+                        if (e.target.classList.contains('social-link')) {
+                            e.target.click();
+                        }
+                    }
+                    
+                    if (e.key === 'm' || e.key === 'M') {
+                        this.muteButton.click();
+                    }
+                });
+                
+                // Focus management
+                const focusableElements = document.querySelectorAll('a, button, input');
+                focusableElements.forEach(el => {
+                    el.setAttribute('tabindex', '0');
+                });
+            }
+            
+            handleResize() {
+                // Adjust layout based on new dimensions
+                const vh = window.innerHeight * 0.01;
+                document.documentElement.style.setProperty('--vh', `${vh}px`);
+            }
+        }
+        
+        // Initialize when DOM is ready
+        document.addEventListener('DOMContentLoaded', () => {
+            new PlatformAdaptivePlayer();
         });
+        
+        // Handle resize events
+        window.addEventListener('resize', () => {
+            const vh = window.innerHeight * 0.01;
+            document.documentElement.style.setProperty('--vh', `${vh}px`);
+        });
+        
+        // Preload critical resources
+        const preloadLink = document.createElement('link');
+        preloadLink.rel = 'preload';
+        preloadLink.href = 'https://i.pinimg.com/1200x/77/ea/3d/77ea3d794148efc7e30fbb8f1fc19d14.jpg';
+        preloadLink.as = 'image';
+        document.head.appendChild(preloadLink);
     </script>
 </body>
 </html>
